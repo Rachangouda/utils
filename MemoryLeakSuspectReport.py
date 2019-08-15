@@ -13,7 +13,7 @@ classNameCol = 3
 
 secondClassNameToHistosMap = {}
 firstClassNameToHistosMap = {}
-nokiaPackageFilters = ['com\.nokia.*']
+xcompanyPackageFilters = ['com\.xxx.*']
 javaPackages = ['^\[.*', '^java.*']
 OutputTable = []
 
@@ -159,7 +159,7 @@ def process():
 
 
 def is3rdPartyPackage(analysisDetails):
-    ignoreList = nokiaPackageFilters + javaPackages
+    ignoreList = xcompanyPackageFilters + javaPackages
     is3rdParty = False
     if len(ignoreList) > 0:
         for pkg_regex in ignoreList:
@@ -173,9 +173,9 @@ def is3rdPartyPackage(analysisDetails):
     return is3rdParty
 
 
-def isNokiaPackage(analysisDetails):
-    if len(nokiaPackageFilters) > 0:
-        for pkg_regex in nokiaPackageFilters:
+def isXcompanyPackage(analysisDetails):
+    if len(xcompanyPackageFilters) > 0:
+        for pkg_regex in xcompanyPackageFilters:
             isIgnorePkg = re.match(pkg_regex, analysisDetails.get_class_name(), re.IGNORECASE)
             if isIgnorePkg:
                 return True
@@ -211,8 +211,8 @@ def generateCountVarianceReport():
     count = 0
     for (analysisDetails) in count_variance_sorted_ad_map:
         if count < args.top:
-            if args.reportType == 'nokiaonly':
-                if isNokiaPackage(analysisDetails):
+            if args.reportType == 'xcompanyonly':
+                if isXcompanyPackage(analysisDetails):
                     count += 1
                     printCountVarianceLine(analysisDetails)
             elif args.reportType == '3rdponly':
@@ -238,8 +238,8 @@ def generateSizevarianceReport():
     count = 0
     for (analysisDetails) in size_variance_sorted_ad_map:
         if count < args.top:
-            if args.reportType == 'nokiaonly':
-                if isNokiaPackage(analysisDetails):
+            if args.reportType == 'xcompanyonly':
+                if isXcompanyPackage(analysisDetails):
                     count += 1
                     printSizeVarienceLine(analysisDetails)
             elif args.reportType == '3rdponly':
@@ -271,11 +271,10 @@ def print_report():
 
 
 def main():
-    # print("Reference https://gist.github.com/alexcpn/a68761c94c85f0210413")
     parser = argparse.ArgumentParser(
         description='A Python Script to parse the Jcmd generated Histograms and Report top Suspect Memory Leak objects')
     # Optional arguments
-    parser.add_argument('reportType', default='all', const='all', nargs='?', choices=['nokiaonly', '3rdponly', 'all'])
+    parser.add_argument('reportType', default='all', const='all', nargs='?', choices=['xcompanyonly', '3rdponly', 'all'])
     parser.add_argument('--top', type=int, default=20, help='How Many leak Suspects shown in report')
     # Mandatory arguments
     parser.add_argument('-f', '--finputfile', help='first Histogram file name', required=True)

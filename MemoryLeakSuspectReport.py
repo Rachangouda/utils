@@ -151,13 +151,15 @@ def get_analysis_details(className, second_histogram, first_histogram):
 def process():
     for className in firstClassNameToHistosMap:
         first_histogram = firstClassNameToHistosMap[className]
-        second_histogram = secondClassNameToHistosMap[className]
+        try:
+            second_histogram = secondClassNameToHistosMap[className]
+            if second_histogram:
+                ClassToAnalysisDetailsHolder[className] = get_analysis_details(className, second_histogram,
+                                                                               first_histogram)
+        except Exception as e:
+            print ("This class is newly available from second CG Run:" , e)
 
-        if second_histogram:
-            ClassToAnalysisDetailsHolder[className] = get_analysis_details(className, second_histogram,
-                                                                           first_histogram)
-
-
+            
 def is3rdPartyPackage(analysisDetails):
     ignoreList = xcompanyPackageFilters + javaPackages
     is3rdParty = False

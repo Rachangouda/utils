@@ -6,6 +6,8 @@ Command line tool to suspect the memory leak in java by analysing JCMD class his
 
 Script will calculate the difference between two jcmd class histograms and displays top N leak suspects sorted by percentage growth.
 
+Note: originally implemented with java coding standards later partially coverted to python coding formats. please ignore code formating. 
+
 # Using this tool
 
 Java process configuration
